@@ -2,6 +2,11 @@
 name = "arcball-cgmath"
 version = "0.1.0"
 authors = ["Mark Hintz <markinportland7@gmail.com>"]
+license = "MIT"
+description = "A simple arcball-style camera. Uses the cgmath-rs library"
+repository = "https://github.com/mhintz/arcball-cgmath"
+readme = "README.md"
+keywords = ["arcball", "cgmath", "camera", "arc", "ball"]
 
 [dependencies]
 cgmath = "0.8.0"
