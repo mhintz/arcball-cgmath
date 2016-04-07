@@ -82,7 +82,8 @@ impl ArcballCamera {
       let prev_pt = ArcballCamera::get_vec_on_ball(self.p_mouse);
       let cur_pt = ArcballCamera::get_vec_on_ball(cur_mouse);
       let angle = prev_pt.dot(cur_pt).min(1.0).acos() * self.spin_speed;
-      let rot_vec = prev_pt.cross(cur_pt).normalize();
+      // The order of the cross product here gets you the correct rotation direction
+      let rot_vec = cur_pt.cross(prev_pt).normalize();
       let rotation: Basis3<f32> = Basis3::from_axis_angle(rot_vec, Rad::new(angle));
       self.rotation = self.rotation.concat(& rotation);
       self.p_mouse = cur_mouse;
