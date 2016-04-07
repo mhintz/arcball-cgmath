@@ -31,11 +31,11 @@ impl ArcballCamera {
   }
 
   pub fn get_transform_mat(& self) -> Matrix4<f32> {
-    let cam_position: Vector3<f32> = self.target + self.rotation.rotate_vector(Vector3::new(0.0, 0.0, self.distance));
+    let cam_position: Vector3<f32> = -(self.target + self.rotation.rotate_vector(Vector3::new(0.0, 0.0, self.distance)));
     let position_transform = Matrix4::from_translation(cam_position);
 
-    let rotation_transform: Matrix3<f32> = self.rotation.into();
-    (position_transform * Matrix4::from(rotation_transform)).invert().unwrap()
+    let rotation_transform: Matrix3<f32> = self.rotation.invert().into();
+    Matrix4::from(rotation_transform) * position_transform
   }
 
   pub fn set_distance(&mut self, distance: f32) -> &mut Self {
