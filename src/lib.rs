@@ -55,6 +55,21 @@ impl<T: cgmath::BaseFloat + num::Float> ArcballCamera<T> {
     self
   }
 
+  pub fn set_spin_speed(&mut self, speed: T) -> &mut Self {
+    self.spin_speed = speed;
+    self
+  }
+
+  pub fn set_zoom_speed(&mut self, speed: T) -> &mut Self {
+    self.zoom_speed = speed;
+    self
+  }
+
+  pub fn set_pan_speed(&mut self, speed: T) -> &mut Self {
+    self.pan_speed = speed;
+    self
+  }
+
   pub fn rotate_start(&mut self, pos: Vector2<T>) {
     self.rotating = true;
     self.p_mouse = pos;
