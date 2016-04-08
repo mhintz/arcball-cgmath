@@ -35,8 +35,8 @@ impl<T: cgmath::BaseFloat + num::Float> ArcballCamera<T> {
   pub fn get_transform_mat(& self) -> Matrix4<T> {
     let cam_position: Vector3<T> = -(self.target + self.rotation.rotate_vector(Vector3::new(T::zero(), T::zero(), self.distance)));
     let position_transform = Matrix4::from_translation(cam_position);
-
     let rotation_transform: Matrix3<T> = self.rotation.invert().into();
+    // The normal order of operations (position * rotation * scale) is reversed here, because the matrix is inverted
     Matrix4::from(rotation_transform) * position_transform
   }
 
