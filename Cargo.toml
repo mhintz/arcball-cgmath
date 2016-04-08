@@ -1,6 +1,6 @@
 [package]
 name = "arcball-cgmath"
-version = "0.2.2"
+version = "0.3.0"
 authors = ["Mark Hintz <markinportland7@gmail.com>"]
 license = "MIT"
 description = "A simple arcball-style camera. Uses the cgmath-rs library"
@@ -10,3 +10,4 @@ keywords = ["arcball", "cgmath", "camera", "arc", "ball"]
 
 [dependencies]
 cgmath = "0.8.0"
+num = "0.1"
