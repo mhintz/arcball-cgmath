@@ -24,7 +24,7 @@ impl<T: cgmath::BaseFloat + rust_num::Float> ArcballCamera<T> {
       target: Vector3::zero(),
       rotation: Basis3::one(),
       distance: T::zero(),
-      spin_speed: num::cast(5.0).unwrap(),
+      spin_speed: T::one(),
       zoom_speed: T::one(),
       pan_speed: T::one(),
       rotating: false,
