@@ -1,10 +1,10 @@
 extern crate cgmath;
-extern crate num as rust_num;
+extern crate num_traits;
 
 use cgmath::*;
 
 // Trait names are fully qualified to make it clear where they come from
-pub struct ArcballCamera<T: cgmath::BaseFloat + rust_num::Float> {
+pub struct ArcballCamera<T: cgmath::BaseFloat + num_traits::Float> {
   p_mouse: Vector2<T>,
   target: Vector3<T>,
   rotation: Basis3<T>,
@@ -17,7 +17,7 @@ pub struct ArcballCamera<T: cgmath::BaseFloat + rust_num::Float> {
 }
 
 /// Assumes all input x and y coordinates are in normalized screen coordinates [-1, 1] in x and y
-impl<T: cgmath::BaseFloat + rust_num::Float> ArcballCamera<T> {
+impl<T: cgmath::BaseFloat + num_traits::Float> ArcballCamera<T> {
   pub fn new() -> ArcballCamera<T> {
     ArcballCamera {
       p_mouse: Vector2::zero(),

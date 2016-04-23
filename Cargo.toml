@@ -9,5 +9,5 @@ readme = "README.md"
 keywords = ["arcball", "cgmath", "camera", "arc", "ball"]
 
 [dependencies]
-cgmath = "0.8.0"
-num = "0.1"
+cgmath = "0.9.1"
+num-traits = "0.1"
