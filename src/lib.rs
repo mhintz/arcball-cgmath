@@ -1,10 +1,11 @@
 extern crate cgmath;
-extern crate num as rust_num;
+extern crate num_traits;
 
-use cgmath::*;
+use cgmath::prelude::*;
+use cgmath::{Basis3, Matrix3, Matrix4, Rad, Vector2, Vector3};
 
 // Trait names are fully qualified to make it clear where they come from
-pub struct ArcballCamera<T: cgmath::BaseFloat + rust_num::Float> {
+pub struct ArcballCamera<T: cgmath::BaseFloat> {
   p_mouse: Vector2<T>,
   target: Vector3<T>,
   rotation: Basis3<T>,
@@ -17,7 +18,7 @@ pub struct ArcballCamera<T: cgmath::BaseFloat + rust_num::Float> {
 }
 
 /// Assumes all input x and y coordinates are in normalized screen coordinates [-1, 1] in x and y
-impl<T: cgmath::BaseFloat + rust_num::Float> ArcballCamera<T> {
+impl<T: cgmath::BaseFloat> ArcballCamera<T> {
   pub fn new() -> ArcballCamera<T> {
     ArcballCamera {
       p_mouse: Vector2::zero(),
@@ -33,9 +34,9 @@ impl<T: cgmath::BaseFloat + rust_num::Float> ArcballCamera<T> {
   }
 
   pub fn get_transform_mat(& self) -> Matrix4<T> {
-    let cam_position: Vector3<T> = -(self.target + self.rotation.rotate_vector(Vector3::new(T::zero(), T::zero(), self.distance)));
+    let cam_position = -(self.target + self.rotation.rotate_vector(Vector3::unit_z() * self.distance));
     let position_transform = Matrix4::from_translation(cam_position);
-    let rotation_transform: Matrix3<T> = self.rotation.invert().into();
+    let rotation_transform = Matrix3::from(self.rotation.invert());
     // The normal order of operations (position * rotation * scale) is reversed here, because the matrix is inverted
     Matrix4::from(rotation_transform) * position_transform
   }
@@ -98,18 +99,18 @@ impl<T: cgmath::BaseFloat + rust_num::Float> ArcballCamera<T> {
     if self.rotating {
       let prev_pt = ArcballCamera::get_vec_on_ball(self.p_mouse);
       let cur_pt = ArcballCamera::get_vec_on_ball(cur_mouse);
-      let angle = prev_pt.dot(cur_pt).min(T::one()).acos() * self.spin_speed;
+      let angle = Rad::acos(prev_pt.dot(cur_pt).min(T::one())) * self.spin_speed;
       // The order of the cross product here gets you the correct rotation direction
       let rot_vec = cur_pt.cross(prev_pt).normalize();
-      let rotation: Basis3<T> = Basis3::from_axis_angle(rot_vec, Rad::new(angle));
-      self.rotation = self.rotation.concat(& rotation);
+      let rotation = Basis3::from_axis_angle(rot_vec, angle);
+      self.rotation = self.rotation.concat(&rotation);
       self.p_mouse = cur_mouse;
     } else if self.panning {
       // Note that the direction of target point movement is the reverse of the direction of mouse movement
       let mouse_vec = -(cur_mouse - self.p_mouse).normalize_to(self.pan_speed);
-      let left_vec = self.rotation.rotate_vector(Vector3::new(T::one(), T::zero(), T::zero())).normalize_to(mouse_vec.x);
-      let up_vec = self.rotation.rotate_vector(Vector3::new(T::zero(), T::one(), T::zero())).normalize_to(mouse_vec.y);
-      self.target = self.target + left_vec + up_vec;
+      let left_vec = self.rotation.rotate_vector(Vector3::unit_x() * mouse_vec.x);
+      let up_vec = self.rotation.rotate_vector(Vector3::unit_y() * mouse_vec.y);
+      self.target += left_vec + up_vec;
       self.p_mouse = cur_mouse;
     }
   }
