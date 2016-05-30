@@ -107,7 +107,7 @@ impl<T: cgmath::BaseFloat> ArcballCamera<T> {
       // The order of the cross product here gets you the correct rotation direction
       let rot_vec = cur_pt.cross(prev_pt).normalize();
       let rotation = Basis3::from_axis_angle(rot_vec, angle);
-      self.rotation = self.rotation.concat(&rotation);
+      self.rotation = self.rotation * rotation;
       self.p_mouse = cur_mouse;
     } else if self.panning {
       // Note that the direction of target point movement is the reverse of the direction of mouse movement
