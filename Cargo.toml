@@ -9,5 +9,5 @@ readme = "README.md"
 keywords = ["arcball", "cgmath", "camera", "arc", "ball"]
 
 [dependencies]
-cgmath = { git = "https://github.com/bjz/cgmath", branch = "master" }
+cgmath = "^0.10.0"
 num-traits = "0.1"
